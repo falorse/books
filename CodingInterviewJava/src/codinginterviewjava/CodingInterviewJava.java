@@ -22,6 +22,50 @@ public class CodingInterviewJava {
 
 }
 
+class Picture {
+
+    int size_;
+    int[][] piccells_;
+
+    Picture(int size) {
+        this.size_ = size;
+        this.piccells_ = new int[size_][size_];
+        
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                this.piccells_[i][j] = i + j;
+            }
+        }
+    }
+
+    void rotate() {
+        for(int i = 0; i < size_ / 2 ; i++){
+            //レイヤーをrotate
+            layerRotate(i);
+        }
+    }
+    
+    void layerRotate(int num){
+        for(int i = num ; i < size_ - num - 1 ; i++){
+            int temp = piccells_[num][i];
+            piccells_[num][i] = piccells_[size_ - 1 - i][num];
+            piccells_[size_ - 1 - i][num] = piccells_[size_ - 1 - num][size_ - 1 - i];
+            piccells_[size_ - 1 - num][size_  - 1 - i] = piccells_[i][size_ - 1 - num];
+            piccells_[i][size_ - 1 - num] = temp;
+        }
+    }
+    
+    void showPicture(){
+        for(int i = 0; i < this.piccells_.length ; i++){
+            for(int j = 0; j < this.piccells_.length; j++){
+                System.out.print(this.piccells_[i][j] + " ");
+            }
+            System.out.print("\n");
+        }
+        System.out.print("\n");
+    }
+}
+
 class Chapter1 {
 
     public boolean isUniqueChars(String str) {
@@ -104,7 +148,7 @@ class Chapter1 {
 
         returnString += ch;
         returnString += String.valueOf(num);
-        
+
         return str.length() < returnString.length() ? str : returnString;
     }
 }

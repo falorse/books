@@ -104,6 +104,17 @@ public class Chapter1Test {
         
         String case2 = "aajjsdf";
         assertEquals(case2, ch1.compress(case2));
-              
+    }
+    
+    @Test
+    public void testRotate(){
+        System.out.println("rotate");
+        
+        Picture pic = new Picture(6);
+        
+        pic.showPicture();
+        pic.rotate();
+        pic.showPicture();
+        
     }
 }
