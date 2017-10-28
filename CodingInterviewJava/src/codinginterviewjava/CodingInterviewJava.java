@@ -5,6 +5,8 @@
  */
 package codinginterviewjava;
 
+import java.util.Stack;
+
 /**
  *
  * @author fukuda
@@ -151,4 +153,33 @@ class Chapter1 {
 
         return str.length() < returnString.length() ? str : returnString;
     }
+    
+    public void changeZero(int[][] mat){
+        int size = mat.length;
+        Stack<Integer> zeroPositions = new Stack<Integer>();
+        
+        for(int i = 0; i < size ; i++){
+            for(int j = 0; j < size ; j++){
+                if(mat[i][j] == 0){
+                    zeroPositions.push(i * size + j);
+                }
+            }
+        }
+        
+        int stackSize = zeroPositions.size();
+        for(int i = 0; i < stackSize ; i++){
+            int zeroPosition = zeroPositions.pop();
+            int row = zeroPosition / size;
+            int col = zeroPosition % size;
+            
+            for(int j = 0; j < size; j++){
+                mat[row][j] = 0;
+            }
+            for(int j = 0; j < size; j++){
+                mat[j][col] = 0;
+            }
+        }
+    }
+    
+    
 }
