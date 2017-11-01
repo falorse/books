@@ -151,6 +151,51 @@ public class Chapter2 {
         return n;
     }
 
+    boolean deleteNode(Node n){
+        if(n == null || n.next_ == null) return false;
+        
+        Node next = n.next_;
+        
+        n.data_ = next.data_;
+        n.next_ = next.next_;
+        return true;
+    }
+    
+    Node separateByX(Node head,int x){
+        Node underXF = null;
+        Node underXL = null;
+        Node overAndEqualXF = null;
+        Node overAndEqualXL = null;
+        Node n = head;
+        
+        while(n != null){
+            if(n.data_ < x){
+                if(underXF == null){
+                    underXF = n;
+                    underXL = n;
+                }else{
+                    underXL.next_ = n;
+                    underXL = n;
+                }
+            }else{
+                if(overAndEqualXF == null){
+                    overAndEqualXF = n;
+                    overAndEqualXL = n;
+                }
+                else{
+                    overAndEqualXL.next_ = n;
+                    overAndEqualXL = n;
+                }
+            }
+            n = n.next_;
+        }
+        
+        underXL.next_ = overAndEqualXF;
+        overAndEqualXL.next_ = null;
+        
+        return underXF;
+    }
+    
     void showList(Node head) {
         Node node = head;
         while (node.next_ != null) {

@@ -110,7 +110,6 @@ public class Chapter2Test {
         assertEquals(4, ch2.lastKAns(head, 10).data_);
         assertEquals(0, ch2.lastKAns(head, 14).data_);
         assertEquals(0, ch2.lastKAns(head, 15).data_);
-
     }
 
     @Test
@@ -132,5 +131,27 @@ public class Chapter2Test {
         head = ch2.deleteNodeByData(head, 0);
 
         assertEquals("1 4 4 7 8", ch2.list(head));
+    }
+
+    @Test
+    public void testSeparateByX() {
+        System.out.println("separate by x");
+
+        Chapter2 ch2 = new Chapter2();
+
+        Node head = makeTestList();
+
+        head.appendToTail(new Node(7));
+        head.appendToTail(new Node(6));
+        head.appendToTail(new Node(4));
+        assertEquals("0 1 2 3 4 4 4 5 5 6 7 8 9 7 6", ch2.list(ch2.separateByX(head, 5)));
+
+        head = makeTestList();
+
+        head.appendToTail(new Node(7));
+        head.appendToTail(new Node(6));
+        head.appendToTail(new Node(4));
+        assertEquals("0 1 2 3 4 4 5 5 6 6 4 7 8 9 7", ch2.list(ch2.separateByX(head, 7)));
+
     }
 }
