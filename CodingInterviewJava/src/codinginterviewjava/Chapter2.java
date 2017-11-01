@@ -5,6 +5,8 @@
  */
 package codinginterviewjava;
 
+import java.util.Hashtable;
+
 /**
  *
  * @author fukuda
@@ -91,6 +93,43 @@ public class Chapter2 {
         return returnNode;
     }
 
+    void deleteDups(Node n) {
+        Hashtable table = new Hashtable();
+        Node pre = null;
+
+        while (n != null) {
+            if (table.containsKey(n.data_)) {
+                pre.next_ = n.next_;
+            } else {
+                pre = n;
+                table.put(n.data_, true);
+            }
+            n = n.next_;
+        }
+    }
+
+    Node lastK(Node head,int k) {
+        //O(n^2)
+        
+        int count = 1;
+        Node n = head;
+        while (n.next_ != null) {
+            count++;
+            n = n.next_;
+        }
+
+        n = head;
+        count -= k;
+        
+        if(count < 0) return head;
+        
+        while(count != 0){
+            n = n.next_;
+            count --;
+        }
+        return n;
+    }
+
     void showList(Node head) {
         Node node = head;
         while (node.next_ != null) {
@@ -109,6 +148,5 @@ public class Chapter2 {
             node = node.next_;
         }
         return returnString + node.data_;
-
     }
 }

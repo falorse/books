@@ -80,6 +80,40 @@ public class Chapter2Test {
     }
 
     @Test
+    public void testDeleteDups() {
+        System.out.println("delete dups");
+
+        Chapter2 ch2 = new Chapter2();
+
+        Node head = makeTestList();
+
+        head.appendToTail(new Node(7));
+        head.appendToTail(new Node(6));
+
+        ch2.deleteDups(head);
+
+        assertEquals("0 1 2 3 4 5 6 7 8 9", ch2.list(head));
+    }
+
+    @Test
+    public void testLastK() {
+        System.out.println("last k");
+
+        Chapter2 ch2 = new Chapter2();
+        Node head = makeTestList();
+
+        head.appendToTail(new Node(7));
+        head.appendToTail(new Node(6));
+
+        ch2.showList(head);
+        assertEquals(7, ch2.lastK(head, 5).data_);
+        assertEquals(4, ch2.lastK(head, 10).data_);
+        assertEquals(0, ch2.lastK(head, 14).data_);
+        assertEquals(0, ch2.lastK(head, 15).data_);
+
+    }
+
+    @Test
     public void testDeleteNodeByData() {
         System.out.println("delete node by data");
 
