@@ -106,10 +106,10 @@ public class Chapter2Test {
         head.appendToTail(new Node(6));
 
         ch2.showList(head);
-        assertEquals(7, ch2.lastK(head, 5).data_);
-        assertEquals(4, ch2.lastK(head, 10).data_);
-        assertEquals(0, ch2.lastK(head, 14).data_);
-        assertEquals(0, ch2.lastK(head, 15).data_);
+        assertEquals(7, ch2.lastKAns(head, 5).data_);
+        assertEquals(4, ch2.lastKAns(head, 10).data_);
+        assertEquals(0, ch2.lastKAns(head, 14).data_);
+        assertEquals(0, ch2.lastKAns(head, 15).data_);
 
     }
 

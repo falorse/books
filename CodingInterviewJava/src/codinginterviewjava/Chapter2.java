@@ -6,6 +6,7 @@
 package codinginterviewjava;
 
 import java.util.Hashtable;
+import java.lang.Exception;
 
 /**
  *
@@ -127,6 +128,26 @@ public class Chapter2 {
             n = n.next_;
             count --;
         }
+        return n;
+    }
+    
+    Node lastKAns(Node head,int k){
+        if(k < 0) return head;
+        
+        Node n = head;
+        Node nk = head;
+        int count = 1;
+        while(count != k){
+            nk = nk.next_;
+            count++;
+            if(nk == null) return head;
+        }
+        
+        while(nk.next_ != null){
+            n = n.next_;
+            nk = nk.next_;
+        }
+        
         return n;
     }
 
