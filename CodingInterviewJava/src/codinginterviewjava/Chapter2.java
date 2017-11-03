@@ -7,6 +7,7 @@ package codinginterviewjava;
 
 import java.util.Hashtable;
 import java.lang.Exception;
+import java.util.Stack;
 
 /**
  *
@@ -226,11 +227,11 @@ public class Chapter2 {
     Node plusList(Node n1, Node n2) {
         Node returnNode = null;
         Node returnLast = null;
-        
+
         int buf = 0;
         int num1 = 0;
         int num2 = 0;
-        while ( n1 != null || n2 != null || buf == 1) {
+        while (n1 != null || n2 != null || buf == 1) {
             num1 = n1 != null ? n1.data_ : 0;
             num2 = n2 != null ? n2.data_ : 0;
             int data = num1 + num2 + buf;
@@ -240,40 +241,80 @@ public class Chapter2 {
             } else {
                 buf = 0;
             }
-            if(returnNode == null){
+            if (returnNode == null) {
                 returnNode = new Node(data);
                 returnLast = returnNode;
-            }else{
+            } else {
                 Node node = new Node(data);
                 returnLast.next_ = node;
                 returnLast = node;
             }
-            if(n1 != null) n1 = n1.next_;
-            if(n2 != null) n2 = n2.next_;
+            if (n1 != null) {
+                n1 = n1.next_;
+            }
+            if (n2 != null) {
+                n2 = n2.next_;
+            }
         }
-        
+
         return returnNode;
     }
-    
-    Node circulateNode(Node n){
-        if(n.next_ == null) return null;
-        Node fastRunner = n.next_;
-        Node slowRunner = n;
-        
+
+    Node circulateNode(Node n) {
+        if (n.next_ == null || n.next_.next_ == null) {
+            return null;
+        }
+        Node fastRunner = n.next_.next_;
+        Node slowRunner = n.next_;
+
         //出会う点を探す
-        while(fastRunner != slowRunner){
-            if(fastRunner == null || fastRunner.next_ == null) return null;
+        while (fastRunner != slowRunner) {
+            if (fastRunner == null || fastRunner.next_ == null) {
+                return null;
+            }
             fastRunner = fastRunner.next_.next_;
             slowRunner = slowRunner.next_;
         }
-        
+
         //ランナーを戻してひとつずつ進めて次に出会った点がループ開始点
         fastRunner = n;
-        while(fastRunner != slowRunner){
+        while (fastRunner != slowRunner) {
             fastRunner = fastRunner.next_;
             slowRunner = slowRunner.next_;
         }
-        
+
         return slowRunner;
+    }
+
+    boolean isBatch(Node head) {
+        Stack<Node> st = new Stack<Node>();
+
+        Node fast = head;
+        Node slow = head;
+        boolean first = true;
+
+        while (fast != slow || first) {
+            first = false;
+            if (fast.next_ == null) {
+                slow = slow.next_;
+                break;
+            }
+            st.push(slow);
+            slow = slow.next_;
+
+            if (fast.next_.next_ == null) {
+                break;
+            }
+            fast = fast.next_.next_;
+        }
+
+        while (slow != null) {
+            if (st.pop().data_ != slow.data_) {
+                return false;
+            }
+            slow = slow.next_;
+        }
+
+        return true;
     }
 }

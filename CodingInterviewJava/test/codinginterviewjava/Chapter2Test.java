@@ -211,4 +211,39 @@ public class Chapter2Test {
 
         assertEquals(2, ch2.circulateNode(head).data_);
     }
+
+    @Test
+    public void testIsBatch() {
+        System.out.println("is batch");
+
+        Chapter2 ch2 = new Chapter2();
+
+        Node head = new Node(1);
+        head.appendToTail(new Node(2));
+        head.appendToTail(new Node(3));
+        head.appendToTail(new Node(4));
+        head.appendToTail(new Node(3));
+        head.appendToTail(new Node(2));
+
+        assertEquals(false, ch2.isBatch(head));
+
+        head.appendToTail(new Node(1));
+
+        assertEquals(true, ch2.isBatch(head));
+        
+        head = new Node(1);
+        head.appendToTail(new Node(2));
+        head.appendToTail(new Node(3));
+        head.appendToTail(new Node(4));
+        head.appendToTail(new Node(4));
+        head.appendToTail(new Node(3));
+        head.appendToTail(new Node(2));
+        head.appendToTail(new Node(1));
+        
+        assertEquals(true, ch2.isBatch(head));
+        
+        head.appendToTail(new Node(5));
+        
+        assertEquals(false, ch2.isBatch(head));
+    }
 }
