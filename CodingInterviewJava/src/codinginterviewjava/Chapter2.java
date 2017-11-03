@@ -109,9 +109,9 @@ public class Chapter2 {
         }
     }
 
-    Node lastK(Node head,int k) {
+    Node lastK(Node head, int k) {
         //O(n^2)
-        
+
         int count = 1;
         Node n = head;
         while (n.next_ != null) {
@@ -121,81 +121,88 @@ public class Chapter2 {
 
         n = head;
         count -= k;
-        
-        if(count < 0) return head;
-        
-        while(count != 0){
+
+        if (count < 0) {
+            return head;
+        }
+
+        while (count != 0) {
             n = n.next_;
-            count --;
+            count--;
         }
-        return n;
-    }
-    
-    Node lastKAns(Node head,int k){
-        if(k < 0) return head;
-        
-        Node n = head;
-        Node nk = head;
-        int count = 1;
-        while(count != k){
-            nk = nk.next_;
-            count++;
-            if(nk == null) return head;
-        }
-        
-        while(nk.next_ != null){
-            n = n.next_;
-            nk = nk.next_;
-        }
-        
         return n;
     }
 
-    boolean deleteNode(Node n){
-        if(n == null || n.next_ == null) return false;
-        
+    Node lastKAns(Node head, int k) {
+        if (k < 0) {
+            return head;
+        }
+
+        Node n = head;
+        Node nk = head;
+        int count = 1;
+        while (count != k) {
+            nk = nk.next_;
+            count++;
+            if (nk == null) {
+                return head;
+            }
+        }
+
+        while (nk.next_ != null) {
+            n = n.next_;
+            nk = nk.next_;
+        }
+
+        return n;
+    }
+
+    boolean deleteNode(Node n) {
+        if (n == null || n.next_ == null) {
+            return false;
+        }
+
         Node next = n.next_;
-        
+
         n.data_ = next.data_;
         n.next_ = next.next_;
         return true;
     }
-    
-    Node separateByX(Node head,int x){
+
+    Node separateByX(Node head, int x) {
         Node underXF = null;
         Node underXL = null;
         Node overAndEqualXF = null;
         Node overAndEqualXL = null;
         Node n = head;
-        
-        while(n != null){
-            if(n.data_ < x){
-                if(underXF == null){
+
+        while (n != null) {
+            if (n.data_ < x) {
+                if (underXF == null) {
                     underXF = n;
                     underXL = n;
-                }else{
+                } else {
                     underXL.next_ = n;
                     underXL = n;
                 }
-            }else{
-                if(overAndEqualXF == null){
+            } else {
+                if (overAndEqualXF == null) {
                     overAndEqualXF = n;
                     overAndEqualXL = n;
-                }
-                else{
+                } else {
                     overAndEqualXL.next_ = n;
                     overAndEqualXL = n;
                 }
             }
             n = n.next_;
         }
-        
+
         underXL.next_ = overAndEqualXF;
         overAndEqualXL.next_ = null;
-        
+
         return underXF;
     }
-    
+
     void showList(Node head) {
         Node node = head;
         while (node.next_ != null) {
@@ -214,5 +221,37 @@ public class Chapter2 {
             node = node.next_;
         }
         return returnString + node.data_;
+    }
+
+    Node plusList(Node n1, Node n2) {
+        Node returnNode = null;
+        Node returnLast = null;
+        
+        int buf = 0;
+        int num1 = 0;
+        int num2 = 0;
+        while ( n1 != null || n2 != null || buf == 1) {
+            num1 = n1 != null ? n1.data_ : 0;
+            num2 = n2 != null ? n2.data_ : 0;
+            int data = num1 + num2 + buf;
+            if (data > 9) {
+                data -= 10;
+                buf = 1;
+            } else {
+                buf = 0;
+            }
+            if(returnNode == null){
+                returnNode = new Node(data);
+                returnLast = returnNode;
+            }else{
+                Node node = new Node(data);
+                returnLast.next_ = node;
+                returnLast = node;
+            }
+            if(n1 != null) n1 = n1.next_;
+            if(n2 != null) n2 = n2.next_;
+        }
+        
+        return returnNode;
     }
 }
