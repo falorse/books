@@ -254,4 +254,26 @@ public class Chapter2 {
         
         return returnNode;
     }
+    
+    Node circulateNode(Node n){
+        if(n.next_ == null) return null;
+        Node fastRunner = n.next_;
+        Node slowRunner = n;
+        
+        //出会う点を探す
+        while(fastRunner != slowRunner){
+            if(fastRunner == null || fastRunner.next_ == null) return null;
+            fastRunner = fastRunner.next_.next_;
+            slowRunner = slowRunner.next_;
+        }
+        
+        //ランナーを戻してひとつずつ進めて次に出会った点がループ開始点
+        fastRunner = n;
+        while(fastRunner != slowRunner){
+            fastRunner = fastRunner.next_;
+            slowRunner = slowRunner.next_;
+        }
+        
+        return slowRunner;
+    }
 }

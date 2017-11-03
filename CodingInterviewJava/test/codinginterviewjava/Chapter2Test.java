@@ -154,30 +154,61 @@ public class Chapter2Test {
         assertEquals("0 1 2 3 4 4 5 5 6 6 4 7 8 9 7", ch2.list(ch2.separateByX(head, 7)));
 
     }
-    
+
     @Test
-    public void testPlusList(){
+    public void testPlusList() {
         System.out.println("plus list");
-        
+
         Chapter2 ch2 = new Chapter2();
         Node n1 = new Node(1);
         n1.appendToTail(new Node(3));
         n1.appendToTail(new Node(4));
-        
+
         Node n2 = new Node(4);
         n2.appendToTail(new Node(3));
         n2.appendToTail(new Node(2));
-        
-        assertEquals("5 6 6",ch2.list(ch2.plusList(n1,n2)));
-        
+
+        assertEquals("5 6 6", ch2.list(ch2.plusList(n1, n2)));
+
         n1.appendToTail(new Node(8));
         n2.appendToTail(new Node(7));
-        
-        assertEquals("5 6 6 5 1",ch2.list(ch2.plusList(n1, n2)));
-        
+
+        assertEquals("5 6 6 5 1", ch2.list(ch2.plusList(n1, n2)));
+
         n1.appendToTail(new Node(1));
         n1.appendToTail(new Node(3));
-        
-        assertEquals("5 6 6 5 2 3",ch2.list(ch2.plusList(n1, n2)));
+
+        assertEquals("5 6 6 5 2 3", ch2.list(ch2.plusList(n1, n2)));
+    }
+
+    @Test
+    public void testCirculateNode() {
+        System.out.println("circulate node");
+
+        Chapter2 ch2 = new Chapter2();
+
+        Node head = new Node(1);
+        Node cir1 = new Node(2);
+
+        head.appendToTail(new Node(1));
+        head.appendToTail(new Node(1));
+        head.appendToTail(new Node(1));
+        head.appendToTail(new Node(1));
+        head.appendToTail(new Node(1));
+
+        head.appendToTail(cir1);
+
+        head.appendToTail(new Node(1));
+        head.appendToTail(new Node(1));
+        head.appendToTail(new Node(1));
+        head.appendToTail(new Node(1));
+        head.appendToTail(new Node(1));
+        head.appendToTail(new Node(1));
+
+        assertEquals(null, ch2.circulateNode(head));
+
+        head.appendToTail(cir1);
+
+        assertEquals(2, ch2.circulateNode(head).data_);
     }
 }
