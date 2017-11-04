@@ -16,7 +16,7 @@ import java.util.Stack;
 class Node {
 
     Node next_ = null;
-    int data_;
+    Object data_;
 
     Node(int data, Node next) {
         data_ = data;
@@ -52,7 +52,7 @@ public class Chapter2 {
 
         Node node = head;
         Node firstLoopNode = head;
-        int num = head.data_;
+        Object num = head.data_;
 
         while (firstLoopNode != null) {
             num = firstLoopNode.data_;
@@ -69,7 +69,7 @@ public class Chapter2 {
         return head;
     }
 
-    Node deleteNodeByData(Node head, int data) {
+    Node deleteNodeByData(Node head, Object data) {
         Node returnNode = head;
 
         while (returnNode.data_ == data) {
@@ -182,7 +182,7 @@ public class Chapter2 {
         Node n = head;
 
         while (n != null) {
-            if (n.data_ < x) {
+            if ((int)n.data_ < x) {
                 if (underXF == null) {
                     underXF = n;
                     underXL = n;
@@ -236,8 +236,8 @@ public class Chapter2 {
         int num1 = 0;
         int num2 = 0;
         while (n1 != null || n2 != null || buf == 1) {
-            num1 = n1 != null ? n1.data_ : 0;
-            num2 = n2 != null ? n2.data_ : 0;
+            num1 = n1 != null ? (int)n1.data_ : 0;
+            num2 = n2 != null ? (int)n2.data_ : 0;
             int data = num1 + num2 + buf;
             if (data > 9) {
                 data -= 10;

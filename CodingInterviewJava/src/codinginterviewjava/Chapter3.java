@@ -31,7 +31,19 @@ class Stack {
     }
 
     Object peek() {
+        if(top_ == null) return null;
         return top_.data_;
+    }
+    
+    String showStack(Node n){
+        if(n == null) n = top_;
+        if(top_ == null) return "";
+        
+        if(n.next_ != null){
+            return showStack(n.next_) + String.valueOf(n.data_);
+        }else{
+            return String.valueOf(n.data_); 
+        }
     }
 }
 
@@ -48,6 +60,16 @@ class Queue{
         }
     }
     
+    void enqueue(Node item){
+        if(first_ == null){
+            last_ = item;
+            first_ = last_;
+        }else{
+            last_.next_ = item;
+            last_ = last_.next_;
+        }
+    }
+    
     Object dequeue(){
         if(first_ != null){
             Object item = first_.data_;
@@ -56,8 +78,22 @@ class Queue{
         }
         return null;
     }
+    
+    String showQueue(){
+        String r = "";
+        Node n = first_;
+        while(n != null){
+            r += String.valueOf(n.data_);
+            n = n.next_;
+        }
+        return r;
+    }
 }
 
 public class Chapter3 {
+    String m = "nn";
 
+    public Chapter3() {
+        
+    }
 }
