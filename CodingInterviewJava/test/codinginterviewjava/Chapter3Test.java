@@ -103,5 +103,91 @@ public class Chapter3Test {
         assertEquals(6, ts_.nodes_[ts_.topNums_[2] - 1].data_);
         assertEquals(6, ts_.nodes_[16].data_);
         assertEquals(7, ts_.nodes_[ts_.topNums_[0] - 1].data_);
+        
+        ts_.pop(1);
+        assertEquals( 10,ts_.pop(1) );
+        assertEquals( 9,ts_.nodes_[ts_.topNums_[1] - 1].data_);
+        
+        assertEquals(7,ts_.pop(0));
+        assertEquals(5, ts_.pop(0));
+    }
+    
+    @Test
+    public void testPop() throws Exception{
+        System.out.println("pop");
+        
+        ts_.push(1, 0);
+        ts_.push(2, 0);
+        ts_.push(3, 1);
+        ts_.push(4, 0);
+        ts_.push(5, 0);
+        ts_.push(6, 2);
+        ts_.push(7, 0);
+        ts_.push(8, 1);
+        ts_.push(9, 1);
+        ts_.push(10, 1);
+        ts_.push(11, 1);
+        
+        ts_.pop(1);
+        assertEquals(10,ts_.pop(1) );
+        assertEquals(9,ts_.nodes_[ts_.topNums_[1] - 1].data_);
+        assertEquals(3, ts_.stackPiles_[1]);
+        assertEquals(11, ts_.topNums_[1]);
+        
+        assertEquals(7,ts_.pop(0));
+        assertEquals(5, ts_.pop(0));
+        assertEquals(3, ts_.stackPiles_[0]);
+        assertEquals(3, ts_.topNums_[0]);
+        
+    }
+    
+    @Test
+    public void testPeek() throws Exception{
+        System.out.println("peek");
+        
+        ts_.push(1, 0);
+        ts_.push(2, 0);
+        ts_.push(3, 1);
+        ts_.push(4, 0);
+        ts_.push(5, 0);
+        ts_.push(6, 2);
+        ts_.push(7, 0);
+        ts_.push(8, 1);
+        ts_.push(9, 1);
+        ts_.push(10, 1);
+        ts_.push(11, 1);
+        
+        assertEquals(11, ts_.peek(1));
+        assertEquals(7, ts_.peek(0));
+        assertEquals(6, ts_.peek(2));
+    }
+    
+    @Test
+    public void integrateTest() throws Exception{
+        System.out.println("integrate");
+        
+        ts_.push(1, 0);
+        ts_.push(2, 0);
+        ts_.push(3, 0);
+        ts_.push(4, 0);
+        ts_.push(5, 0);
+        ts_.push(1, 1);
+        ts_.push(2, 1);
+        ts_.push(3, 1);
+        ts_.push(4, 1);
+        ts_.push(5, 1);
+        ts_.push(6, 1);
+        ts_.push(7, 1);
+        ts_.push(8, 1);
+        ts_.push(9, 1);
+        ts_.push(10, 1);
+        ts_.push(1, 2);
+        
+        assertEquals(10, ts_.pop(1));
+        assertEquals(25, ts_.topNums_[2]);
+        assertEquals(17, ts_.topNums_[1]);
+        assertEquals(5, ts_.topNums_[0]);
+        assertEquals(16, ts_.stackSizes_[1]);
+        assertEquals(8, ts_.stackSizes_[0]);
     }
 }

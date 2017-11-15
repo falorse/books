@@ -172,6 +172,17 @@ class ThreeStacks {
         }
         return true;
     }
+    
+    Object pop(int num){
+        if(stackPiles_[num] == 0) return null;
+        stackPiles_[num]--;
+        topNums_[num]--;
+        return nodes_[topNums_[num]].data_;
+    }
+    
+    Object peek(int num){
+        return nodes_[topNums_[num] - 1].data_;
+    }
 }
 
 public class Chapter3 {
