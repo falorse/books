@@ -190,4 +190,39 @@ public class Chapter3Test {
         assertEquals(16, ts_.stackSizes_[1]);
         assertEquals(8, ts_.stackSizes_[0]);
     }
+    
+    @Test
+    public void testStackHasMin(){
+        System.out.println("has min stack");
+        
+        StackHasMin  shm = new StackHasMin();
+        
+        shm.push(1);
+        shm.push(2);
+        shm.push(3);
+        shm.push(4);
+        
+        assertEquals(1, shm.min());
+        
+        shm.push(0);
+        assertEquals(0, shm.min());
+        
+        shm.pop();
+        assertEquals(1, shm.min());
+        
+        shm.pop();
+        assertEquals(1, shm.min());
+        
+        shm.push(0);
+        shm.push(0);
+        
+        assertEquals(0, shm.min());
+        shm.pop();
+        
+        assertEquals(0, shm.min());
+        
+        shm.pop();
+        assertEquals(1, shm.min());
+        
+    }
 }

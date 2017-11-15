@@ -38,6 +38,10 @@ class Stack {
         return top_.data_;
     }
 
+    boolean isEmpty(){
+        return top_ == null;
+    }
+    
     String showStack(Node n) {
         if (n == null) {
             n = top_;
@@ -53,6 +57,42 @@ class Stack {
         }
     }
 }
+
+class StackHasMin extends Stack{
+    Stack minValueStack_;
+
+    public StackHasMin() {
+        minValueStack_ = new Stack();
+    }
+    
+    
+    void push(Object item){
+        Node node = new Node(item);
+        if(top_ == null){
+            top_ = node;
+            minValueStack_.push(node.data_);
+        }else{
+            node.next_ = top_;
+            top_ = node;
+            if((int)node.data_ <= (int)minValueStack_.peek()){
+                minValueStack_.push(node.data_);
+            }
+        }
+    }
+    
+    Object pop(){
+        Node node = top_;
+        if((int)top_.data_ == (int)minValueStack_.peek()){
+            minValueStack_.pop();
+        }
+        top_ = node.next_;
+        return node;
+    }
+    
+    Object min(){
+        return minValueStack_.peek();
+    }
+}    
 
 class Queue {
 
