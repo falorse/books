@@ -28,7 +28,7 @@ class Node {
     }
 
     Node(Object item) {
-        data_ = (int)item;
+        data_ = item;
     }
 
     Node appendToTail(Node add) {

@@ -38,10 +38,10 @@ class Stack {
         return top_.data_;
     }
 
-    boolean isEmpty(){
+    boolean isEmpty() {
         return top_ == null;
     }
-    
+
     String showStack(Node n) {
         if (n == null) {
             n = top_;
@@ -56,43 +56,52 @@ class Stack {
             return String.valueOf(n.data_);
         }
     }
+
+    Object peekAt(int num) {
+        Node node = top_;
+        while (num != 0 && node.next_ != null) {
+            node = node.next_;
+            num--;
+        }
+        return node.data_;
+    }
 }
 
-class StackHasMin extends Stack{
+class StackHasMin extends Stack {
+
     Stack minValueStack_;
 
     public StackHasMin() {
         minValueStack_ = new Stack();
     }
-    
-    
-    void push(Object item){
+
+    void push(Object item) {
         Node node = new Node(item);
-        if(top_ == null){
+        if (top_ == null) {
             top_ = node;
             minValueStack_.push(node.data_);
-        }else{
+        } else {
             node.next_ = top_;
             top_ = node;
-            if((int)node.data_ <= (int)minValueStack_.peek()){
+            if ((int) node.data_ <= (int) minValueStack_.peek()) {
                 minValueStack_.push(node.data_);
             }
         }
     }
-    
-    Object pop(){
+
+    Object pop() {
         Node node = top_;
-        if((int)top_.data_ == (int)minValueStack_.peek()){
+        if ((int) top_.data_ == (int) minValueStack_.peek()) {
             minValueStack_.pop();
         }
         top_ = node.next_;
         return node;
     }
-    
-    Object min(){
+
+    Object min() {
         return minValueStack_.peek();
     }
-}    
+}
 
 class Queue {
 
@@ -191,7 +200,7 @@ class ThreeStacks {
             //ある場合
             switch (num) {
                 case 0:
-                    for(int i = size_ - 1; i > newSize - 1; i--){
+                    for (int i = size_ - 1; i > newSize - 1; i--) {
                         nodes_[i] = nodes_[i - stackSizes_[0]];
                     }
                     topNums_[1] += stackSizes_[0];
@@ -199,7 +208,7 @@ class ThreeStacks {
                     stackSizes_[0] *= 2;
                     break;
                 case 1:
-                    for(int i = size_ - 1; i > newSize + stackSizes_[0] - 1 ; i--){
+                    for (int i = size_ - 1; i > newSize + stackSizes_[0] - 1; i--) {
                         nodes_[i] = nodes_[i - stackSizes_[1]];
                     }
                     topNums_[2] += stackSizes_[1];
@@ -212,16 +221,92 @@ class ThreeStacks {
         }
         return true;
     }
-    
-    Object pop(int num){
-        if(stackPiles_[num] == 0) return null;
+
+    Object pop(int num) {
+        if (stackPiles_[num] == 0) {
+            return null;
+        }
         stackPiles_[num]--;
         topNums_[num]--;
         return nodes_[topNums_[num]].data_;
     }
-    
-    Object peek(int num){
+
+    Object peek(int num) {
         return nodes_[topNums_[num] - 1].data_;
+    }
+}
+
+class SetOfStacks {
+
+    Stack stacks_;
+    int count_;
+    int limit_;
+
+    public SetOfStacks(int limit) throws Exception {
+        if (limit <= 0) {
+            throw new Exception();
+        }
+        stacks_ = new Stack();
+        stacks_.push(new Stack());
+        count_ = 0;
+        limit_ = limit;
+    }
+
+    public void push(Object item) {
+        if (count_ != limit_) {
+            count_++;
+        } else {
+            stacks_.push(new Stack());
+            count_ = 1;
+        }
+        ((Stack) stacks_.peek()).push(item);
+    }
+
+    public Object pop() {
+        if (stacks_.isEmpty()) {
+            count_ = 0;
+            return null;
+        } else if (((Stack) stacks_.peek()).isEmpty()) {
+            stacks_.pop();
+            count_ = limit_;
+        }
+        count_--;
+        if (stacks_.isEmpty()) {
+            count_ = 0;
+            stacks_.push(new Stack());
+            return null;
+        }
+        return ((Stack) stacks_.peek()).pop();
+    }
+
+    public Object peek() {
+        if (stacks_.isEmpty()) {
+            return null;
+        }
+        if (((Stack) stacks_.peek()).isEmpty()) {
+            stacks_.pop();
+            count_ = limit_;
+        }
+        return ((Stack) stacks_.peek()).peek();
+    }
+
+    public boolean isEmpty() {
+        if (stacks_.peek() == null) {
+            return true;
+        } else if (((Stack) stacks_.peek()).isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    public Object popAt(int num) {
+        if(num == 0){
+            if(((Stack)(stacks_.peek())).isEmpty()){
+                return null;
+            }
+            return this.pop();
+        }
+        return ((Stack) (stacks_.peekAt(num))).pop();
     }
 }
 
