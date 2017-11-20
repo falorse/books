@@ -16,6 +16,11 @@ class Stack {
 
     Node top_;
 
+    Stack() {
+        System.out.println("stack");
+        top_ = null;
+    }
+
     Object pop() {
         if (top_ != null) {
             Object item = top_.data_;
@@ -26,9 +31,14 @@ class Stack {
     }
 
     void push(Object item) {
+
         Node t = new Node(item);
-        t.next_ = top_;
-        top_ = t;
+        if (top_ == null) {
+            top_ = t;
+        } else {
+            t.next_ = top_;
+            top_ = t;
+        }
     }
 
     Object peek() {
@@ -57,6 +67,10 @@ class Stack {
         }
     }
 
+    String showStack(){
+        return showStack(top_);
+    }
+    
     Object peekAt(int num) {
         Node node = top_;
         while (num != 0 && node.next_ != null) {
@@ -300,8 +314,8 @@ class SetOfStacks {
     }
 
     public Object popAt(int num) {
-        if(num == 0){
-            if(((Stack)(stacks_.peek())).isEmpty()){
+        if (num == 0) {
+            if (((Stack) (stacks_.peek())).isEmpty()) {
                 return null;
             }
             return this.pop();
@@ -315,4 +329,52 @@ public class Chapter3 {
     public Chapter3() {
     }
 
+    public static void main(String[] args) {
+        System.out.println(hanoiTower(10));
+    }
+
+    static int hanoiTower(int n) {
+        int count = 0;
+        Stack stacks[] = new Stack[3];
+
+        for (int i = 0; i < 3; i++) {
+            stacks[i] = new Stack();
+        }
+
+        for (int i = n; i > 0; i--) {
+            stacks[0].push(i);
+        }
+
+        boolean pushed;
+        int preCircle = n + 1;
+        while (true) {
+            for (int i = 0; i < 3; i++) {
+                int circle;
+                if(stacks[i].isEmpty() ||  (circle = (int) (stacks[i].peek())) == preCircle)
+                    continue;
+                pushed = false;
+                for (int j = (i + 1) % 3 ; j != i; j++) {
+                    if (stacks[j].isEmpty() || circle < (int) (stacks[j].peek())) {
+                        stacks[j].push(stacks[i].pop());
+                        pushed = true;
+                        preCircle = circle;
+                        break;
+                    }
+                    if(j == 2)
+                        j -= 3;
+                }
+                if (pushed) {
+                    break;
+                }
+            }
+            count++;
+            System.out.println(stacks[0].showStack());
+            System.out.println(stacks[1].showStack());
+            System.out.println(stacks[2].showStack() + "\n/////////////");
+            if (stacks[0].isEmpty() && stacks[1].isEmpty()) {
+                break;
+            }
+        }
+        return count;
+    }
 }
