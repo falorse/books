@@ -330,7 +330,7 @@ public class Chapter3 {
     }
 
     public static void main(String[] args) {
-        System.out.println(hanoiTower(10));
+        System.out.println(honoiTower2(20));
     }
 
     static int hanoiTower(int n) {
@@ -376,5 +376,34 @@ public class Chapter3 {
             }
         }
         return count;
+    }
+    
+    static boolean honoiTower2(int n){
+        Stack[] stacks = new Stack[3];
+        for(int i = 0; i < 3; i++){
+            stacks[i] = new Stack();
+        }
+        
+        for(int i = n; i > 0; i--){
+            stacks[0].push(i);
+        }
+        
+        moveDisk(n,stacks[0],stacks[1],stacks[2]);
+        
+        if(stacks[0].isEmpty() && stacks[1].isEmpty())
+            return true;
+        
+        return false;
+    }
+    
+    static void moveDisk(int n, Stack origin, Stack buffer, Stack dest){
+        if( n <= 0)
+            return;
+        
+        moveDisk(n - 1, origin, dest, buffer);
+        
+        dest.push(origin.pop());
+        
+        moveDisk(n - 1, buffer, origin, dest);
     }
 }
