@@ -85,8 +85,10 @@ RubyやRuby on Rails固有の命名規則もあるので参照すべし
 https://qiita.com/gakkie/items/3afcd505c786364aa5fa  
 https://qiita.com/takahashim/items/ccfd489c9b26f15b7193
   
-bool型を返す関数は末尾に?を付けるなど...    
-```is_user``` -> ```is_user?```  
+bool型を返す関数はRubyは他と違い、  
+末尾に?を付ける  
+isやhasも付けない  
+```is_user``` -> ```user?```  
 
 ### Tips
 
