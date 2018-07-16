@@ -1,22 +1,12 @@
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
-from tensorflow.examples.tutorials.mnist import input_data
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 
-def sin(x, T = 100):
-    return np.sin(2.0 * np.pi * x / T)
+np.random.seed(0)
+tf.set_random_seed(1234)
 
-def toy_problem(T = 100, ampl = 0.05):
-    x = np.arange(0, 2 * T + 1)
-    noise = ampl * np.random.uniform(low = -0.1, high = 1.0, size = len(x))
-    return sin(x) + noise
-
-def train_test_split(x, y, test_size):
-    x_len = len(x)
-    y_len = len(y)
-    return x[0:x_len - test_size], x[x_len - test_size:], y[:y_len - test_size], y[y_len - test_size:]
 
 def inference(x, n_batch, maxlen=None, n_hidden=None, n_out=None):
     def weight_variable(shape):
@@ -24,17 +14,17 @@ def inference(x, n_batch, maxlen=None, n_hidden=None, n_out=None):
         return tf.Variable(initial)
 
     def bias_variable(shape):
-        initial = tf.zeros(shape)
+        initial = tf.zeros(shape, dtype=tf.float32)
         return tf.Variable(initial)
 
     cell = tf.contrib.rnn.BasicRNNCell(n_hidden)
-    initial_state = cell.zero_state(40, tf.float32)
+    initial_state = cell.zero_state(n_batch, tf.float32)
 
     state = initial_state
 
     # 過去の隠れ層の出力を保存しておく
     outputs = []
-    cell_output = None
+
     # 変数に対して共用の名前を付けておく。
     with tf.variable_scope('RNN'):
         for t in range(maxlen):
@@ -65,71 +55,80 @@ def training(loss):
     train_step = optimizer.minimize(loss)
     return train_step
 
+if __name__ == '__main__':
+    def sin(x, T = 100):
+        return np.sin(2.0 * np.pi * x / T)
 
-T = 100
-f = toy_problem(T)
+    def toy_problem(T = 100, ampl = 0.05):
+        x = np.arange(0, 2 * T + 1)
+        noise = ampl * np.random.uniform(low = -0.1, high = 1.0, size = len(x))
+        return sin(x) + noise
 
-length_of_sequences = 2 * T
-maxlen = 25
+    T = 100
+    f = toy_problem(T)
 
-data = []
-target = []
+    length_of_sequences = 2 * T
+    maxlen = 25
 
-for i in range(0, length_of_sequences - maxlen + 1):
-    data.append(f[i:i + maxlen])
-    target.append(f[i + maxlen])
+    data = []
+    target = []
 
-X = np.array(data).reshape(len(data), maxlen, 1)
-Y = np.array(target).reshape(len(data), 1)
+    for i in range(0, length_of_sequences - maxlen + 1):
+        data.append(f[i: i + maxlen])
+        target.append(f[i + maxlen])
 
-N_train = int(len(data) * 0.9)
-N_validation = len(data) - N_train
+    X = np.array(data).reshape(len(data), maxlen, 1)
+    Y = np.array(target).reshape(len(data), 1)
 
-X_train, X_validation, Y_train, Y_validation =\
-  train_test_split(X, Y, test_size = N_validation)
+    N_train = int(len(data) * 0.9)
+    N_validation = len(data) - N_train
 
-n_in = len(X[0][0])
-n_hidden = 20
-n_out = len(Y[0])
+    X_train, X_validation, Y_train, Y_validation =\
+      train_test_split(X, Y, test_size = N_validation)
 
-x = tf.placeholder(tf.float32, shape=[None, maxlen, n_in])
-t = tf.placeholder(tf.float32, shape=[None, n_out])
-n_batch = tf.placeholder(tf.int32)
+    n_in = len(X[0][0])
+    n_hidden = 30
+    n_out = len(Y[0])
 
-y = inference(x, n_batch, maxlen=maxlen, n_hidden=n_hidden, n_out=n_out)
-loss = loss(y, t)
-train_step = training(loss)
+    x = tf.placeholder(tf.float32, shape=[None, maxlen, n_in])
+    t = tf.placeholder(tf.float32, shape=[None, n_out])
+    n_batch = tf.placeholder(tf.int32, shape=[])
 
-epochs = 500
-batch_size = 10
+    y = inference(x, n_batch, maxlen=maxlen, n_hidden=n_hidden, n_out=n_out)
+    loss = loss(y, t)
+    train_step = training(loss)
 
-init = tf.global_variables_initializer()
-sess = tf.Session()
-sess.run(init)
+    epochs = 500
+    batch_size = 10
 
-n_batches = N_train // batch_size
+    init = tf.global_variables_initializer()
+    sess = tf.Session()
+    sess.run(init)
 
-for epoch in range(epochs):
-    x_, y_ = shuffle(X_train, Y_train)
+    n_batches = N_train // batch_size
 
-    for i in range(n_batches):
-        start = i * batch_size
-        end = start * batch_size
+    history = {'val_loss':[], 'val_acc':[]}
+    for epoch in range(epochs):
+        x_, y_ = shuffle(X_train, Y_train)
 
-        sess.run(train_step, feed_dict={
-                x: x_[start:end],
-                t: y_[start:end],
-                n_batch: batch_size
+        for i in range(n_batches):
+            start = i * batch_size
+            end = start * batch_size
+
+            sess.run(train_step, feed_dict={
+                    x: x_[start:end],
+                    t: y_[start:end],
+                    n_batch: batch_size
+            })
+
+        val_loss = loss.eval(session=sess, feed_dict={
+            x: X_validation,
+            t: Y_validation,
+            n_batch: N_validation
         })
 
-    val_loss = loss.eval(session=sess, feed_dict={
-        x: X_validation,
-        t: Y_validation,
-        n_batch: N_validation
-    })
+        history['val_loss'].append(val_loss)
+        print('epoch', epoch, ' validation loss', val_loss)
 
-    history['val_loss'].append(val_loss)
-    print('epoch', epoch, ' validation loss', val_loss)
-
-    # if early_stopping.validate(val_loss):
-    #     break
+        # if early_stopping.validate(val_loss):
+        #     break
