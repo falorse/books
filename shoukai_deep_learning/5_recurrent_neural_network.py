@@ -28,8 +28,7 @@ def inference(x, n_batch, maxlen=None, n_hidden=None, n_out=None):
             # 名前がついた変数を再利用することを明示しているのがこの行
             if t > 0:
                 tf.get_variable_scope().reuse_variables()
-            # print('t:',t, " state,cell_out, x[:, t,:]",state,"\n", cell_output, '\n', x[:,t,:])
-            (cell_output, state) = cell(x[:, t, :] , state)
+            (cell_output, state) = cell(x[:, t, :], state)
             outputs.append(cell_output)
 
     output = outputs[-1]
@@ -130,13 +129,12 @@ if __name__ == '__main__':
 
     n_batches = N_train // batch_size
 
-    history = {'val_loss':[], 'val_acc':[]}
     for epoch in range(epochs):
         X_, Y_ = shuffle(X_train, Y_train)
 
         for i in range(n_batches):
             start = i * batch_size
-            end = start * batch_size
+            end = start + batch_size
 
             sess.run(train_step, feed_dict={
                     x: X_[start:end],
